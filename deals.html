@@ -1,0 +1,164 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Deals & Discounts | FinTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/ux.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body data-page="deals">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="index.html">
+        <span class="brand-mark"><i class="fa-solid fa-chart-line"></i></span>
+        <span>Fin<span>Track</span></span>
+      </a>
+      <nav class="sidebar-nav" aria-label="Main navigation">
+        <p class="nav-label">Workspace</p>
+        <a class="nav-item" href="index.html"><i class="fa-solid fa-grid-2"></i><span>Dashboard</span></a>
+        <a class="nav-item" href="transactions.html"><i class="fa-solid fa-arrow-right-arrow-left"></i><span>Transactions</span></a>
+        <a class="nav-item" href="budget.html"><i class="fa-solid fa-wallet"></i><span>Budget</span></a>
+        <a class="nav-item" href="goals.html"><i class="fa-solid fa-bullseye"></i><span>Goals</span></a>
+        <p class="nav-label nav-label-spaced">Insights & Offers</p>
+        <a class="nav-item" href="subscriptions.html"><i class="fa-solid fa-repeat"></i><span>Subscriptions</span></a>
+        <a class="nav-item active" href="deals.html"><i class="fa-solid fa-tags"></i><span>Deals & Offers</span></a>
+        <a class="nav-item" href="analytics.html"><i class="fa-solid fa-chart-pie"></i><span>Analytics</span></a>
+      </nav>
+      <div class="sidebar-bottom">
+        <a class="nav-item" href="settings.html"><i class="fa-solid fa-sliders"></i><span>Settings</span></a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="icon-button mobile-menu" id="mobileMenu" aria-label="Open navigation">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="page-heading">
+          <span class="eyebrow" id="currentDate">Smart Shopping</span>
+          <h1>Deals & Discounts</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-button" id="themeToggle" aria-label="Toggle dark mode">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+          <div class="profile-chip">
+            <span class="avatar" id="userAvatar">JD</span>
+            <span class="profile-name" id="profileName">Jaswanth</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Smart Savings Shopper & Affordability Advisor -->
+      <section class="panel advisor-panel" id="savingsAdvisorSection">
+        <div class="advisor-header">
+          <div>
+            <span class="category-badge safe-badge"><i class="fa-solid fa-shield-halved"></i> Smart Savings Shopper</span>
+            <h2 class="section-title">Can I buy it from my savings?</h2>
+            <p class="section-subtitle">Check if a discounted deal fits safely in your Future Buyings pool before spending.</p>
+          </div>
+          <div class="savings-stat-chip">
+            <span>Future Buyings Savings Pool</span>
+            <strong id="advisorSavingsPool">₹0</strong>
+          </div>
+        </div>
+
+        <form id="advisorForm" class="advisor-form-grid">
+          <label>
+            <span>Item or Deal Name</span>
+            <input id="advisorItemName" type="text" placeholder="e.g. boAt Wireless Earbuds" required>
+          </label>
+          <label>
+            <span>Platform</span>
+            <select id="advisorPlatform">
+              <option value="Amazon">Amazon</option>
+              <option value="Flipkart">Flipkart</option>
+              <option value="Swiggy">Swiggy</option>
+              <option value="Zomato">Zomato</option>
+              <option value="Myntra">Myntra</option>
+              <option value="Blinkit">Blinkit</option>
+              <option value="Zepto">Zepto</option>
+              <option value="Other">Other Store</option>
+            </select>
+          </label>
+          <label>
+            <span>Original Price</span>
+            <input id="advisorOriginalPrice" type="number" min="1" placeholder="₹4,000">
+          </label>
+          <label>
+            <span>Deal / Discounted Price</span>
+            <input id="advisorDealPrice" type="number" min="1" placeholder="₹1,800" required>
+          </label>
+        </form>
+
+        <div class="verdict-container" id="advisorVerdictBox">
+          <div class="verdict-header">
+            <span class="verdict-tag" id="verdictTag">Safe to Buy! 🟢</span>
+            <strong id="verdictTitle">Checking your savings safety...</strong>
+          </div>
+          <p id="verdictMessage" class="verdict-message"></p>
+          <div class="verdict-metrics" id="verdictMetrics">
+            <div><span>Price</span><strong id="verdictPrice">₹0</strong></div>
+            <div><span>Savings Used</span><strong id="verdictPercent">0%</strong></div>
+            <div><span>Safe Balance Remaining</span><strong id="verdictRemaining">₹0</strong></div>
+          </div>
+          <div class="verdict-actions" id="verdictActions">
+            <button type="button" class="primary-button" id="buyWithSavingsBtn">
+              <i class="fa-solid fa-bag-shopping"></i> Buy with Savings & Log Purchase
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Live Offers & Deals Section -->
+      <section class="page-toolbar">
+        <div>
+          <p class="section-kicker">Top Discounts & Promos</p>
+          <h2 class="page-title">Explore Verified Deals</h2>
+        </div>
+        <div class="deals-platform-tabs" id="platformTabs">
+          <button class="deal-tab active" data-platform="all">All Stores</button>
+          <button class="deal-tab" data-platform="Amazon"><i class="fa-brands fa-amazon"></i> Amazon</button>
+          <button class="deal-tab" data-platform="Flipkart"><i class="fa-solid fa-cart-shopping"></i> Flipkart</button>
+          <button class="deal-tab" data-platform="Swiggy"><i class="fa-solid fa-utensils"></i> Swiggy</button>
+          <button class="deal-tab" data-platform="Zomato"><i class="fa-solid fa-bowl-food"></i> Zomato</button>
+          <button class="deal-tab" data-platform="Myntra"><i class="fa-solid fa-shirt"></i> Myntra</button>
+          <button class="deal-tab" data-platform="Groceries"><i class="fa-solid fa-basket-shopping"></i> Quick Groceries</button>
+        </div>
+      </section>
+
+      <!-- Filter bar for deals -->
+      <section class="panel filter-panel">
+        <div class="filter-grid">
+          <label class="search-field">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input id="searchDeals" placeholder="Search offers, brands, headphones, meals...">
+          </label>
+          <select id="dealCategoryFilter">
+            <option value="all">All Categories</option>
+            <option value="Food & Dining">Food & Dining</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Fashion">Fashion</option>
+            <option value="Groceries">Groceries & Essentials</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- Deals Grid -->
+      <section class="deals-grid" id="dealsGrid"></section>
+    </main>
+  </div>
+
+  <div id="featureModal"></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/deals.js"></script>
+</body>
+</html>
