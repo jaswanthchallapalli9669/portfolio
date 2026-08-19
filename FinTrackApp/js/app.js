@@ -5,8 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
   applyUserPreferences();
   setupThemeToggle();
   setupMobileNavigation();
-  setupSubscriptionsNavigation();
+  setupDynamicNavigation();
   setupTransactionModal();
+  setupSalarySavingsPulse();
   setupDashboardInteractions();
   setupFinancialHealth();
   setupSmartInsights();
@@ -17,17 +18,112 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.classList.add('ux-ready');
 });
 
-function setupSubscriptionsNavigation() {
+function setupDynamicNavigation() {
   const navigation = document.querySelector('.sidebar-nav');
-  if (!navigation || navigation.querySelector('[href="subscriptions.html"]')) return;
-  const link = document.createElement('a');
-  link.className = 'nav-item';
-  link.href = 'subscriptions.html';
-  link.innerHTML = '<i class="fa-solid fa-repeat"></i><span>Subscriptions</span>';
-  const analyticsLink = navigation.querySelector('[href="analytics.html"]');
-  if (analyticsLink) analyticsLink.insertAdjacentElement('beforebegin', link);
-  else navigation.appendChild(link);
+  if (!navigation) return;
+
+  // Subscriptions link
+  if (!navigation.querySelector('[href="subscriptions.html"]')) {
+    const subLink = document.createElement('a');
+    subLink.className = `nav-item ${document.body.dataset.page === 'subscriptions' ? 'active' : ''}`;
+    subLink.href = 'subscriptions.html';
+    subLink.innerHTML = '<i class="fa-solid fa-repeat"></i><span>Subscriptions</span>';
+    const analyticsLink = navigation.querySelector('[href="analytics.html"]');
+    if (analyticsLink) analyticsLink.insertAdjacentElement('beforebegin', subLink);
+    else navigation.appendChild(subLink);
+  }
+
+  // Deals & Offers link
+  if (!navigation.querySelector('[href="deals.html"]')) {
+    const dealsLink = document.createElement('a');
+    dealsLink.className = `nav-item ${document.body.dataset.page === 'deals' ? 'active' : ''}`;
+    dealsLink.href = 'deals.html';
+    dealsLink.innerHTML = '<i class="fa-solid fa-tags"></i><span>Deals & Offers</span>';
+    const analyticsLink = navigation.querySelector('[href="analytics.html"]');
+    if (analyticsLink) analyticsLink.insertAdjacentElement('beforebegin', dealsLink);
+    else navigation.appendChild(dealsLink);
+  }
 }
+
+function setupSalarySavingsPulse() {
+  if (document.body.dataset.page !== 'dashboard') return;
+  const summaryGrid = document.querySelector('.summary-grid');
+  if (!summaryGrid || document.querySelector('#salarySavingsPulse')) return;
+
+  const section = document.createElement('section');
+  section.className = 'panel salary-pulse-panel';
+  section.id = 'salarySavingsPulse';
+  section.innerHTML = `
+    <div class="pulse-head">
+      <div>
+        <span class="category-badge safe-badge"><i class="fa-solid fa-calculator"></i> Your Money Flow</span>
+        <h2>Monthly Salary & Future Savings</h2>
+        <p>A simple, zero-confusion breakdown of where your salary goes and what you have saved to spend on deals.</p>
+      </div>
+      <a href="deals.html" class="primary-button pulse-deal-btn">
+        <i class="fa-solid fa-tags"></i> Explore Deals & Buy from Savings <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+    <div class="salary-flow-grid">
+      <div class="flow-card">
+        <span class="flow-icon"><i class="fa-solid fa-money-bill-wave"></i></span>
+        <div>
+          <span class="flow-label">Monthly Salary</span>
+          <strong class="flow-value" id="pulseSalary">₹0</strong>
+          <small id="pulsePayday">Budgeted baseline</small>
+        </div>
+      </div>
+      <div class="flow-divider"><i class="fa-solid fa-minus"></i></div>
+      <div class="flow-card">
+        <span class="flow-icon orange"><i class="fa-solid fa-arrow-trend-down"></i></span>
+        <div>
+          <span class="flow-label">Spent This Month</span>
+          <strong class="flow-value" id="pulseSpent">₹0</strong>
+          <small id="pulseExpensesCount">0 transactions</small>
+        </div>
+      </div>
+      <div class="flow-divider"><i class="fa-solid fa-equals"></i></div>
+      <div class="flow-card highlight">
+        <span class="flow-icon green"><i class="fa-solid fa-check-circle"></i></span>
+        <div>
+          <span class="flow-label">Safe to Spend Balance</span>
+          <strong class="flow-value highlight" id="pulseSafeSpend">₹0</strong>
+          <small>Protected from bills & savings</small>
+        </div>
+      </div>
+      <div class="flow-divider plus"><i class="fa-solid fa-gem"></i></div>
+      <div class="flow-card future-pool">
+        <span class="flow-icon purple"><i class="fa-solid fa-piggy-bank"></i></span>
+        <div>
+          <span class="flow-label">Future Buyings Savings</span>
+          <strong class="flow-value purple" id="pulseFutureSavings">₹0</strong>
+          <small>Reserved for Amazon/Flipkart deals</small>
+        </div>
+      </div>
+    </div>
+  `;
+
+  summaryGrid.insertAdjacentElement('afterend', section);
+  renderSalarySavingsPulse();
+  window.addEventListener('fintrack:data-updated', renderSalarySavingsPulse);
+}
+
+function renderSalarySavingsPulse() {
+  const pulseSalary = document.getElementById('pulseSalary');
+  if (!pulseSalary) return;
+
+  const data = getData();
+  const summary = getSalarySummary(data);
+
+  pulseSalary.textContent = formatCurrency(summary.salary);
+  document.getElementById('pulseSpent').textContent = formatCurrency(summary.spentThisMonth);
+  document.getElementById('pulseSafeSpend').textContent = formatCurrency(summary.safeToSpend);
+  document.getElementById('pulseFutureSavings').textContent = formatCurrency(summary.futureSavings);
+
+  const monthExpenses = getMonthTransactions(data.transactions).filter(t => t.type === 'expense');
+  document.getElementById('pulseExpensesCount').textContent = `${monthExpenses.length} expense log${monthExpenses.length === 1 ? '' : 's'}`;
+}
+
 
 function injectUxStyles() {
   if (document.querySelector('link[data-ux-styles]')) return;
